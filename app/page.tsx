@@ -113,14 +113,29 @@ export default function Home() {
 
   const openInAI = (platform: 'chatgpt' | 'claude' | 'gemini') => {
     if (!output) return
+
+    // URL encode the output for use in query parameters
+    const encodedPrompt = encodeURIComponent(output)
+
     const urls = {
+      // ChatGPT doesn't support URL parameters for prompt pre-filling
       chatgpt: 'https://chat.openai.com/',
-      claude: 'https://claude.ai/',
+      // Claude supports text parameter in the URL
+      claude: `https://claude.ai/new?q=${encodedPrompt}`,
+      // Gemini doesn't officially support URL parameters for prompt pre-filling
       gemini: 'https://gemini.google.com/',
     }
+
+    // Always copy to clipboard as fallback
     navigator.clipboard.writeText(output)
     window.open(urls[platform], '_blank')
-    toast.success(`Copied! Opening ${platform}...`)
+
+    // Update toast message based on platform
+    if (platform === 'claude') {
+      toast.success(`Opening Claude with your prompt!`)
+    } else {
+      toast.success(`Copied! Paste (⌘V) in ${platform}`)
+    }
   }
 
   return (
