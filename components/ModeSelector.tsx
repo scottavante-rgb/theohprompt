@@ -9,8 +9,6 @@ interface ModeSelectorProps {
 
 const modes = [
   { value: 'auto' as const, label: 'Auto', tooltip: 'Let OhPrompt! decide.' },
-  { value: 'easy' as const, label: 'Easy', tooltip: 'Keep it chill.' },
-  { value: 'normal' as const, label: 'Normal', tooltip: 'Balanced and smart.' },
   { value: 'expert' as const, label: 'Expert', tooltip: 'Go full nerd.' },
 ];
 

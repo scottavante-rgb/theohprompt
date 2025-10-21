@@ -10,8 +10,6 @@ import { useTheme } from 'next-themes'
 
 const modes = [
   { value: 'auto', label: 'Auto', color: '#FF6E00', tooltip: 'AI picks the best mode based on your input' },
-  { value: 'easy', label: 'Easy', color: '#A2C6BD', tooltip: 'Simple & conversational - keeps it casual' },
-  { value: 'normal', label: 'Normal', color: '#B6E2E1', tooltip: 'Balanced structure with clear instructions' },
   { value: 'expert', label: 'Expert', color: '#C9B4E8', tooltip: 'Advanced prompting with step-by-step reasoning' },
 ]
 

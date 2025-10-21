@@ -1,44 +1,26 @@
 import OpenAI from 'openai';
 
-export type PromptMode = 'auto' | 'easy' | 'normal' | 'expert';
+export type PromptMode = 'auto' | 'expert';
 export type Tone = 'professional' | 'playful' | 'technical' | 'poetic' | 'witty' | 'dry' | 'harsh' | 'brutal';
 
 const toneModifiers: Record<Tone, string> = {
-  professional: "Use clear, direct, and structured language. Maintain a professional and business-appropriate tone.",
-  playful: "Use light, witty phrasing. Make it engaging and fun while staying clear and useful.",
-  technical: "Use precise, domain-rich vocabulary. Include technical terminology where appropriate.",
-  poetic: "Use lyrical, figurative phrasing. Make it creative and expressive while maintaining clarity.",
-  witty: "Use sharp, clever phrasing with intelligent humor. Be entertaining while staying insightful and smart.",
-  dry: "Use deadpan, matter-of-fact delivery with subtle humor. Keep it understated and ironic.",
-  harsh: "Use blunt, no-nonsense language. Be direct and uncompromising. Cut through the fluff.",
-  brutal: "Use ruthlessly honest, unfiltered language. Don't sugarcoat anything. Be unapologetically blunt.",
+  professional: "CRITICAL: Adjust the entire rewritten prompt to use clear, direct, and structured language with a professional and business-appropriate tone throughout.",
+  playful: "CRITICAL: Adjust the entire rewritten prompt to use light, witty phrasing. Make it engaging and fun while staying clear and useful.",
+  technical: "CRITICAL: Adjust the entire rewritten prompt to use precise, domain-rich vocabulary with technical terminology where appropriate.",
+  poetic: "CRITICAL: Adjust the entire rewritten prompt to use lyrical, figurative phrasing that's creative and expressive while maintaining clarity.",
+  witty: "CRITICAL: Adjust the entire rewritten prompt to use sharp, clever phrasing with intelligent humor. Make it entertaining while staying insightful and smart.",
+  dry: "CRITICAL: Adjust the entire rewritten prompt to use deadpan, matter-of-fact delivery with subtle humor. Keep it understated and ironic.",
+  harsh: "CRITICAL: Adjust the entire rewritten prompt to use blunt, no-nonsense language. Be direct and uncompromising. Cut through the fluff.",
+  brutal: "CRITICAL: Adjust the entire rewritten prompt to use ruthlessly honest, unfiltered language. Don't sugarcoat anything. Be unapologetically blunt.",
 };
 
 export const systemPrompts: Record<Exclude<PromptMode, 'auto'>, string> = {
-  easy: "Rewrite this prompt simply and conversationally. Maintain the user's tone but make it clear, short, and friendly. Avoid jargon or excessive structure.",
-  normal: "Rewrite this prompt with clarity, structure, and tone suitable for ChatGPT or Claude. Include role, task, context, and output format where appropriate while keeping it concise and useful.",
-  expert: "Rewrite this prompt for expert-level AI prompting. Include detailed role assignment, step-by-step reasoning structure, constraints, and evaluation criteria. Format output in Markdown for clarity.",
+  expert: "Rewrite this prompt for expert-level AI prompting. Include detailed role assignment, step-by-step reasoning structure, constraints, and evaluation criteria. Format output in Markdown for clarity when appropriate.",
 };
 
 export function detectMode(prompt: string): Exclude<PromptMode, 'auto'> {
-  const wordCount = prompt.trim().split(/\s+/).length;
-  const lowerPrompt = prompt.toLowerCase();
-
-  if (wordCount < 12) {
-    return 'easy';
-  }
-
-  const expertKeywords = ['act as', 'generate', 'analyse', 'analyze', 'compare', 'evaluate', 'step by step'];
-  if (expertKeywords.some(keyword => lowerPrompt.includes(keyword))) {
-    return 'expert';
-  }
-
-  const normalKeywords = ['write', 'make', 'explain', 'create', 'describe'];
-  if (normalKeywords.some(keyword => lowerPrompt.includes(keyword))) {
-    return 'normal';
-  }
-
-  return 'normal';
+  // Auto mode always returns expert now since we only have auto and expert
+  return 'expert';
 }
 
 export async function transformPrompt(
